@@ -36,8 +36,6 @@ class DepartmentResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
-    protected static ?int $navigationSort = 1;
-
     public static function getNavigationSort(): ?int
     {
         return config('zeus.department_resource_sort',1);
