@@ -35,8 +35,10 @@ class LetterResource extends Resource
 {
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
 
-    protected static ?int $navigationSort = 2;
-
+    public static function getNavigationSort(): ?int
+    {
+        return config('zeus.letter_resource_sort',2);
+    }
     public static function getModel(): string
     {
         return WindPlugin::get()->getModel('Letter');

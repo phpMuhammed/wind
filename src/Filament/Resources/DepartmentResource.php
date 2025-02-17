@@ -38,6 +38,11 @@ class DepartmentResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationSort(): ?int
+    {
+        return config('zeus.department_resource_sort',1);
+    }
+
     public static function getModel(): string
     {
         return WindPlugin::get()->getModel('Department');
