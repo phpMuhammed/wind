@@ -2,6 +2,7 @@
 
 namespace LaraZeus\Wind\Filament\Resources;
 
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
@@ -288,5 +289,13 @@ class LetterResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return WindPlugin::get()->getNavigationGroupLabel();
+    }
+    public static function canAccess(): bool
+    {
+        if (config('zeus.allow_permission_access', false)) {
+            return Filament::auth()->user()->can(config('zeus.manage_letter_permission'));
+        } else {
+            return parent::canAccess();
+        }
     }
 }

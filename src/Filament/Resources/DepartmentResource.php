@@ -2,6 +2,7 @@
 
 namespace LaraZeus\Wind\Filament\Resources;
 
+use Filament\Facades\Filament;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -38,7 +39,7 @@ class DepartmentResource extends Resource
 
     public static function getNavigationSort(): ?int
     {
-        return config('zeus.department_resource_sort',1);
+        return config('zeus.department_resource_sort', 1);
     }
 
     public static function getModel(): string
@@ -127,11 +128,11 @@ class DepartmentResource extends Resource
                 Filter::make('is_active')
                     ->label(__('is active'))
                     ->toggle()
-                    ->query(fn (Builder $query): Builder => $query->where('is_active', true)),
+                    ->query(fn(Builder $query): Builder => $query->where('is_active', true)),
                 Filter::make('not_active')
                     ->label(__('not active'))
                     ->toggle()
-                    ->query(fn (Builder $query): Builder => $query->where('is_active', false)),
+                    ->query(fn(Builder $query): Builder => $query->where('is_active', false)),
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),
@@ -148,7 +149,7 @@ class DepartmentResource extends Resource
                         ->color('warning')
                         ->icon('heroicon-o-arrow-top-right-on-square')
                         ->label(__('Open'))
-                        ->url(fn (Model $record): string => route('contact', ['departmentSlug' => $record]))
+                        ->url(fn(Model $record): string => route('contact', ['departmentSlug' => $record]))
                         ->openUrlInNewTab(),
                     DeleteAction::make('delete'),
                     ForceDeleteAction::make(),
@@ -184,5 +185,14 @@ class DepartmentResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return WindPlugin::get()->getNavigationGroupLabel();
+    }
+
+    public static function canAccess(): bool
+    {
+        if (config('zeus.allow_permission_access', false)) {
+            return Filament::auth()->user()->can(config('zeus.manage_department_permission'));
+        } else {
+            return parent::canAccess();
+        }
     }
 }
